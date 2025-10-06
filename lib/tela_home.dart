@@ -1,40 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:voupedir/banco/restaurante.dart';
+import 'package:voupedir/banco/restaurante_dao.dart';
 import 'package:voupedir/banco/tela_cad_restaurante.dart';
 
-class TelaHome extends StatelessWidget{
+class TelaHome extends StatefulWidget {
   TelaHome({super.key});
 
   @override
+  State<TelaHome> createState() => TelaHomeState();
+}
+
+class TelaHomeState extends State<TelaHome>{
+  List<restaurante> restaurantes = [];
+
+  @override
+  void initState(){
+    super.initState();
+    carregaRestaurantes();
+  }
+  Future <void> carregaRestaurantes() async{
+    final lista = await RestauranteDAO.listarTodos();
+    setState((){
+      restaurantes = lista;
+    });
+  }
+  @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(title: const Text("Seja bem vindo Usuário")),
-      body: Padding(padding: const EdgeInsets.all(30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Lista de Restaurantes:"),
-            ElevatedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
-            }, child: Text("Cadastrar Novo Restaurante")),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
+      appBar: AppBar(
+          title: const Text("Lista de Restaurantes"),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
+    }, icon: Icon(Icons.add))
+        ],
+      ),
+      body: Padding(padding: const EdgeInsets.all(10),
+        child: ListView.builder(
+          itemCount: restaurantes.length,
+          itemBuilder: (context, index){
+            final r = restaurantes[index]{
+            return Card(
+              margin: EdgeInsets.symmetric(vertical:8),
+              child: ListTile(
+                title: Text (r.nome?? 'Sem nome'),
+                subtitle: Text('ID: ${r.codigo}'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Meu restaurante"),
-                    Text("Comida Mexicana")
+                    IconButton(
+                        onPressed: (){
+                          //Codigo para Editar Restaurante
+                        },
+                        icon: Icon(Icons.edit,color: Colors.blue)
+                    ),   IconButton(
+                        onPressed: (){
+                          AlertDialog(
+                            title: Text("Confirmar ação"),
+                            content: Text("Deseja realmente excluir?"),
+                            actions: <Widget>[
+                            TextButton(
+                                onPressed: (){
+                                  //Código para excluir o registro
+                                },
+                                child: Text("sim")
+                            ),
+                              TextButton(
+                                  onPressed: (){
+                                    //Código para excluir o registro
+                                  },
+                                  child: Text("não")
+                              )
+                            ],
+                          );
+                          //Codigo para EXCLUIR Restaurante
+                        },
+                        icon: Icon(Icons.delete,color: Colors.red)
+                    ),
                   ],
                 ),
-              SizedBox(width: 10),
-                ElevatedButton(onPressed: (){},child: Text("Excluir")),
-                SizedBox(width: 10),
-                ElevatedButton(onPressed: (){}, child: Text("Editar"))
-              ],
-            )
-          ]
+              ),
+            );
+
+          }
+
 
         )
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:() {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
+
+
+
+
 }
