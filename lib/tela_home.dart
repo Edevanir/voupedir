@@ -11,7 +11,7 @@ class TelaHome extends StatefulWidget {
 }
 
 class TelaHomeState extends State<TelaHome>{
-  List<restaurante> restaurantes = [];
+  List<Restaurante> restaurantes = [];
 
   @override
   void initState(){
@@ -31,61 +31,64 @@ class TelaHomeState extends State<TelaHome>{
           title: const Text("Lista de Restaurantes"),
         actions: [
           IconButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
-    }, icon: Icon(Icons.add))
+           Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
+
+    },
+             icon: Icon(Icons.add)
+          )
         ],
       ),
       body: Padding(padding: const EdgeInsets.all(10),
         child: ListView.builder(
           itemCount: restaurantes.length,
-          itemBuilder: (context, index){
-            final r = restaurantes[index]{
-            return Card(
-              margin: EdgeInsets.symmetric(vertical:8),
-              child: ListTile(
-                title: Text (r.nome?? 'Sem nome'),
-                subtitle: Text('ID: ${r.codigo}'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                        onPressed: (){
-                          //Codigo para Editar Restaurante
-                        },
-                        icon: Icon(Icons.edit,color: Colors.blue)
-                    ),   IconButton(
-                        onPressed: (){
-                          AlertDialog(
-                            title: Text("Confirmar ação"),
-                            content: Text("Deseja realmente excluir?"),
-                            actions: <Widget>[
-                            TextButton(
-                                onPressed: (){
-                                  //Código para excluir o registro
-                                },
-                                child: Text("sim")
-                            ),
-                              TextButton(
-                                  onPressed: (){
-                                    //Código para excluir o registro
-                                  },
-                                  child: Text("não")
-                              )
-                            ],
-                          );
-                          //Codigo para EXCLUIR Restaurante
-                        },
-                        icon: Icon(Icons.delete,color: Colors.red)
-                    ),
-                  ],
+          itemBuilder: (context, index) {
+            final r = restaurantes[index];
+            {
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                child: ListTile(
+                  title: Text(r.nomerestaurante ?? 'Sem nome'),
+                  subtitle: Text('ID: ${r.codigorestaurante}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            //Codigo para Editar Restaurante
+                          },
+                          icon: Icon(Icons.edit, color: Colors.blue)
+                      ), IconButton(
+                          onPressed: () {
+                            AlertDialog(
+                              title: Text("Confirmar ação"),
+                              content: Text("Deseja realmente excluir?"),
+                              actions: <Widget>[
+                                TextButton(
+                                    onPressed: () {
+                                      //Código para excluir o registro
+                                    },
+                                    child: Text("sim")
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      //Código para excluir o registro
+                                    },
+                                    child: Text("não")
+                                )
+                              ],
+                            );
+                            //Codigo para EXCLUIR Restaurante
+                          },
+                          icon: Icon(Icons.delete, color: Colors.red)
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-
+              );
+            }
           }
 
-
-        )
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed:() {
