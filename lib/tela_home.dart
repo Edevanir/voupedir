@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voupedir/banco/restaurante.dart';
 import 'package:voupedir/banco/restaurante_dao.dart';
 import 'package:voupedir/banco/tela_cad_restaurante.dart';
+import 'package:voupedir/tela_edit_restaurante.dart';
 
 class TelaHome extends StatefulWidget {
   TelaHome({super.key});
@@ -30,9 +31,13 @@ class TelaHomeState extends State<TelaHome>{
       appBar: AppBar(
           title: const Text("Lista de Restaurantes"),
         actions: [
-          IconButton(onPressed: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
-
+          IconButton(onPressed: () async{
+            final t = await Navigator.push(context, MaterialPageRoute(builder: (contest) => TelaCadRestaurante()));
+           if(t == false || t == null){
+             setState((){
+               carregaRestaurantes();
+             });
+           }
     },
              icon: Icon(Icons.add)
           )
@@ -53,29 +58,39 @@ class TelaHomeState extends State<TelaHome>{
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                          onPressed: () {
-                            //Codigo para Editar Restaurante
+                          onPressed: () async{
+                            TelaEditRestaurante.restaurante = await RestauranteDAO.listar(r.codigorestaurante);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditRestaurante()));
                           },
                           icon: Icon(Icons.edit, color: Colors.blue)
                       ), IconButton(
                           onPressed: () {
+                            showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+
                             AlertDialog(
                               title: Text("Confirmar ação"),
                               content: Text("Deseja realmente excluir?"),
                               actions: <Widget>[
                                 TextButton(
                                     onPressed: () {
-                                      //Código para excluir o registro
+                                      RestauranteDAO.excluir(r);
+                                      setState(() {
+                                        carregaRestaurantes();
+                                      });
+                                      Navigator.pop(context);
                                     },
                                     child: Text("sim")
                                 ),
                                 TextButton(
                                     onPressed: () {
-                                      //Código para excluir o registro
+                                      Navigator.pop(context);
                                     },
                                     child: Text("não")
                                 )
                               ],
+                                )
                             );
                             //Codigo para EXCLUIR Restaurante
                           },

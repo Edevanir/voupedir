@@ -1,31 +1,43 @@
+import 'package:voupedir/banco/tipo.dart';
+import 'package:voupedir/usuario.dart';
 class Restaurante{
 
   int? _codigorestaurante;
   String? _nomerestaurante;
-  double? _latitude;
-  double? _longitude;
+  String? _latitude;
+  String? _longitude;
+  Usuario? _proprietario;
+  Tipo? _culinaria;
 
   Restaurante({
     int? codigorestaurante,
     String? nomerestaurante,
-    double? latitude,
-    double? longitude,
+    String? latitude,
+    String ? longitude,
+    Usuario ? proprietario,
+    Tipo ? culinaria,
 
   }){
     _codigorestaurante = codigorestaurante;
     _nomerestaurante = nomerestaurante;
     _latitude = latitude;
     _longitude = longitude;
+    _proprietario = proprietario;
+    _culinaria = culinaria;
 
   }
   int? get codigorestaurante => _codigorestaurante;
   String? get nomerestaurante => _nomerestaurante;
-  double? get latitude => _latitude;
-  double? get longitude => _longitude;
+  String? get latitude => _latitude;
+  String? get longitude => _longitude;
+  Usuario? get proprietario => proprietario;
+  Tipo? get culinaria => _culinaria;
 
   set nomerestaurante (String? nomerestaurante) => _nomerestaurante = nomerestaurante;
   set codigorestaurante(int? codigorestaurante) => _codigorestaurante = codigorestaurante;
-  set latitude(double? latitude) => _latitude = latitude;
-  set longitude(double? longitude) => _longitude = longitude;
+  set latitude(String? latitude) => _latitude = latitude;
+  set longitude(String? longitude) => _longitude = longitude;
+  set proprietario(Usuario? proprietario) => _proprietario = proprietario;
+  set culinaria(Tipo? culinaria) => _culinaria = culinaria;
 }
 
